@@ -77,7 +77,6 @@ const Login = () => {
                 </Form>
                 <SosialLogin></SosialLogin>
             </div>
-
         </div>
     );
 };
