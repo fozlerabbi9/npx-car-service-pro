@@ -11,52 +11,69 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confarmPassword, setConfarmPassWord] = useState("");
+    const [checkledValue, setCheckedValue] = useState('');
+    const [aggary , setAggry] = useState(false);
     const [error, setError] = useState("");
     // console.log(error);
 
-    const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
+    const [createUserWithEmailAndPassword, userLog] = useCreateUserWithEmailAndPassword(auth);
     const [signInWithGoogle, user, loading] = useSignInWithGoogle(auth);
-    // const navigate = useNavigate(auth);
+    const navigate = useNavigate(auth);
     // console.log(user?.displayName);
 
-    // if(user){
-    //     navigate("/")
-    // }
-    
-    const getNameFun = (e) =>{
+    if(userLog || user){
+        navigate("/")
+    }
+
+    const getNameFun = (e) => {
         setName(e.target.value)
     }
 
-    const getEmailFun = (e) =>{
+    const getEmailFun = (e) => {
         setEmail(e.target.value)
     }
 
-    const getPassFun = (e) =>{
+    const getPassFun = (e) => {
         setPassword(e.target.value)
     }
- 
-    const getConfarmPassFun = (e) =>{
+
+    const getConfarmPassFun = (e) => {
         setConfarmPassWord(e.target.value)
     }
+    const checkedFun = (e) => {
+        if (e.target.checked) {
+            setCheckedValue(e.target.value);
+            setAggry(true);
+        }
+        else{
+            setAggry(!true);
+        }
+    }
 
-    const submitFun = (e) =>{
+    const submitFun = (e) => {
         e.preventDefault();
-        if(password !== confarmPassword){
+        if (password !== confarmPassword) {
             setError("Password Not Macth...Please try again");
             return;
         }
-        else if(password.length < 6){
+        else if (password.length < 6) {
             setError("You Have to minimum 6 carecter");
             return;
         }
-        else{
-            createUserWithEmailAndPassword(email, password);
-            setError("You registerd SuccessFully...Now You Can Login");
+        else {
+            if (!checkledValue) {
+                setError("First you agray with us");
+                return;
+            }
+            else {
+                createUserWithEmailAndPassword(email, password);
+                setError("You registerd SuccessFully...Now You Can Login");
+            }
         }
         // console.log(email, password, confarmPassword);
     }
 
-    const signInFun = (e) =>{
+    const signInFun = (e) => {
         e.preventDefault();
         signInWithGoogle(email, password);
     }
@@ -87,7 +104,7 @@ const Register = () => {
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control  onBlur={getPassFun} type="password" placeholder="Password" />
+                        <Form.Control onBlur={getPassFun} type="password" placeholder="Password" />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -97,16 +114,21 @@ const Register = () => {
                     <p>If u r already registerd go there... <Link to="/login">Login</Link> </p>
 
                     {
-                        error? <p style={{color : "red"}}>{error}</p> : ""
+                        error ? <p style={{ color: "red" }}>{error}</p> : ""
                     }
 
                     {/* <button onClick={signInFun}>Google Sign-in</button><br /> */}
+                    <input onClick={checkedFun} className="me-2" type="checkbox" name="terms" id="terms" />
+                    <label className={aggary ? "text-success" : "text-danger"} htmlFor="terms">Accept Genious Car Terms And Conditions</label>
+                    {/* <label className={checkledValue ? "text-dander" : "text-success"} className='ms-2'>Accept Genious Car Terms And Conditions</label> */}
 
-                    <Button variant="primary" type="submit">
+                    <p></p>
+
+                    <Button disabled={!aggary} variant="primary" type="submit">
                         Submit
                     </Button>
                 </Form>
-                    <SosialLogin></SosialLogin>
+                <SosialLogin></SosialLogin>
             </div>
         </div>
     );

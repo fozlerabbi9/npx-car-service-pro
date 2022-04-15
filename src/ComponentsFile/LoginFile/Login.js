@@ -4,14 +4,18 @@ import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import SosialLogin from '../SosialLoginFile/SosialLogin';
+import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
+import { async } from '@firebase/util';
+
 
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    // const [errorr, setError] = useState("");
+    const [errorr, setError] = useState("");
 
     const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+    const [sendPasswordResetEmail, sending, senderror] = useSendPasswordResetEmail(auth);
     const naviget = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
@@ -31,6 +35,12 @@ const Login = () => {
         e.preventDefault();
         signInWithEmailAndPassword(email, password);
         console.log(email, password);
+    }
+
+    const resetPassword = async(e) =>{
+        e.preventDefault();
+        await sendPasswordResetEmail(email);
+        setError("chack your email")
     }
     // if(error){
     //     setError(error)
@@ -67,10 +77,13 @@ const Login = () => {
                     }
 
                     {
-                        error ? <p style={{ color: "red" }}>{error.message}</p> : ""
+                        error || errorr ? <p style={{ color: "red" }}>{error?.message} {errorr}</p> : ""
                     }
                     <p>if u are not Register... Plz go to <Link to="/register">Register...</Link></p>
-
+                   
+                    <button onClick={resetPassword}>Forget Password</button>
+                   
+                    <br />
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>

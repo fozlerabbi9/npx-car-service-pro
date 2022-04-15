@@ -15,10 +15,8 @@ const SosialLogin = () => {
 
     let errorElement;
     if (error || giterror) {
-        errorElement = <div>
-            <p className='text-danger'>Error: {error?.message} {giterror?.message}</p>
-        </div>
-
+        errorElement = <p className='text-danger'>Error: {error?.message} {giterror?.message}</p>
+        
     }
     if (user || gituser) {
         navigate('/')
