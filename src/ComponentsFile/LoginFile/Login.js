@@ -6,6 +6,9 @@ import auth from '../../firebase.init';
 import SosialLogin from '../SosialLoginFile/SosialLogin';
 import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { async } from '@firebase/util';
+import Loading from '../SharedPage/LoadingFile/Loading';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -22,6 +25,9 @@ const Login = () => {
     if (user) {
         naviget(from, { replace: true })
     }
+    if (loading || sending) {
+        return <Loading></Loading>
+    }
 
     const getEmailFun = (e) => {
         setEmail(e.target.value)
@@ -37,10 +43,17 @@ const Login = () => {
         console.log(email, password);
     }
 
-    const resetPassword = async(e) =>{
+    const resetPassword = async (e) => {
         e.preventDefault();
-        await sendPasswordResetEmail(email);
-        setError("chack your email")
+        if (!email) {
+            toast("Please Enter a valid email")            
+        }
+        else{
+            await sendPasswordResetEmail(email);
+            toast("chack your email")            
+        }
+
+        // setError("chack your email")
     }
     // if(error){
     //     setError(error)
@@ -80,15 +93,16 @@ const Login = () => {
                         error || errorr ? <p style={{ color: "red" }}>{error?.message} {errorr}</p> : ""
                     }
                     <p>if u are not Register... Plz go to <Link to="/register">Register...</Link></p>
-                   
-                    <button onClick={resetPassword}>Forget Password</button>
-                   
+
+                    <button className='btn btn-link' onClick={resetPassword}>Forget Password</button>
+
                     <br />
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
                 </Form>
                 <SosialLogin></SosialLogin>
+                <ToastContainer />
             </div>
         </div>
     );

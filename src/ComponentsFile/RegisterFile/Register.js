@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import './Register.css';
-import { useCreateUserWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 import { Link, useNavigate } from 'react-router-dom';
 import SosialLogin from '../SosialLoginFile/SosialLogin';
+import Loading from '../SharedPage/LoadingFile/Loading';
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -12,17 +13,24 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confarmPassword, setConfarmPassWord] = useState("");
     const [checkledValue, setCheckedValue] = useState('');
-    const [aggary , setAggry] = useState(false);
+    const [aggary, setAggry] = useState(false);
     const [error, setError] = useState("");
     // console.log(error);
 
-    const [createUserWithEmailAndPassword, userLog] = useCreateUserWithEmailAndPassword(auth);
+    const [createUserWithEmailAndPassword, userLog] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
     const [signInWithGoogle, user, loading] = useSignInWithGoogle(auth);
+    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     const navigate = useNavigate(auth);
     // console.log(user?.displayName);
 
-    if(userLog || user){
-        navigate("/")
+    // if (userLog) {
+    //     console.log("user = ",userLog)
+    // }
+    // if (userLog || user) {
+    //     navigate("/")
+    // }
+    if(loading){
+        return <Loading></Loading>
     }
 
     const getNameFun = (e) => {
@@ -45,12 +53,12 @@ const Register = () => {
             setCheckedValue(e.target.value);
             setAggry(true);
         }
-        else{
+        else {
             setAggry(!true);
         }
     }
 
-    const submitFun = (e) => {
+    const submitFun = async (e) => {
         e.preventDefault();
         if (password !== confarmPassword) {
             setError("Password Not Macth...Please try again");
@@ -66,12 +74,15 @@ const Register = () => {
                 return;
             }
             else {
-                createUserWithEmailAndPassword(email, password);
+                await createUserWithEmailAndPassword(email, password);
+                await updateProfile({ displayName : name});
+                // alert('Updated profile');
                 setError("You registerd SuccessFully...Now You Can Login");
+                navigate("/")
             }
         }
         // console.log(email, password, confarmPassword);
-    }
+    } 
 
     const signInFun = (e) => {
         e.preventDefault();
