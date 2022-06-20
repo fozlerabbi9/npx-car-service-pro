@@ -7,8 +7,11 @@ import SosialLogin from '../SosialLoginFile/SosialLogin';
 import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
 import { async } from '@firebase/util';
 import Loading from '../SharedPage/LoadingFile/Loading';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import useToken from '../HooksFile/useToken';
 
 
 
@@ -19,12 +22,17 @@ const Login = () => {
 
     const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
     const [sendPasswordResetEmail, sending, senderror] = useSendPasswordResetEmail(auth);
+    const [token] = useToken(user);
     const naviget = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
-    if (user) {
+    
+    if (token) {
         naviget(from, { replace: true })
     }
+    // if (user) {
+    //     // naviget(from, { replace: true })
+    // }
     if (loading || sending) {
         return <Loading></Loading>
     }
@@ -37,10 +45,14 @@ const Login = () => {
         setPassword(e.target.value)
     }
 
-    const loginFun = (e) => {
+    const loginFun = async(e) => {
         e.preventDefault();
-        signInWithEmailAndPassword(email, password);
-        console.log(email, password);
+        await signInWithEmailAndPassword(email, password);
+        // const {data} = await axios.post('https://calm-basin-38280.herokuapp.com/logingettoke', {email})
+        // // console.log(email, password);
+        // localStorage.setItem('accessToken', data.accessToken)
+        // naviget(from, { replace: true })  এইটা  এখানে দিতে হবে না ,,,, token pauyar por dite hobe
+        // console.log(data)
     }
 
     const resetPassword = async (e) => {
@@ -102,7 +114,7 @@ const Login = () => {
                     </Button>
                 </Form>
                 <SosialLogin></SosialLogin>
-                <ToastContainer />
+                {/* <ToastContainer /> */}
             </div>
         </div>
     );

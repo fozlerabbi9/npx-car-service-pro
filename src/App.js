@@ -10,6 +10,11 @@ import Register from './ComponentsFile/RegisterFile/Register';
 import RequireAuth from './ComponentsFile/RequireAuthFile/RequireAuth';
 import ServiceDetail from './ComponentsFile/ServiceDetailFile/ServiceDetail';
 import NotFound from './ComponentsFile/NoteFoundFIle/NotFound';
+import Addservice from './ComponentsFile/AddService/Addservice';
+import MansgeServices from './ComponentsFile/ManageServices/MansgeServices';
+import CheckOut from './ComponentsFile/CheckOutFile/CheckOut';
+import { ToastContainer } from 'react-toastify';
+import Order from './ComponentsFile/OrderPage/Order';
 
 
 function App() {
@@ -28,18 +33,44 @@ function App() {
           </RequireAuth>
         }></Route>
 
+        <Route path='/checkOut/:detailesId' element={
+          <RequireAuth>
+            <CheckOut></CheckOut>
+          </RequireAuth>
+        }></Route>
+
 
         <Route path='/aboutUs' element={
           <RequireAuth>
             <AboutUs></AboutUs>
           </RequireAuth>
         }></Route>
+
+        <Route path='/addedservice' element={
+          <RequireAuth>
+           <Addservice></Addservice>
+          </RequireAuth>
+        }></Route>
+
+        <Route path='/mansgeServices' element={
+          <RequireAuth>
+           <MansgeServices></MansgeServices>
+          </RequireAuth>
+        }></Route>
+
+        <Route path='/order' element={
+          <RequireAuth>
+           <Order></Order>
+          </RequireAuth>
+        }></Route>
+
         <Route path='/login' element={<Login></Login>}></Route>
         <Route path='/register' element={<Register></Register>}></Route>
         <Route path='*' element={<NotFound></NotFound>}></Route>
       </Routes>
 
       <Footer></Footer>
+      <ToastContainer></ToastContainer>
 
     </div>
   );

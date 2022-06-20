@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ShowData = ({service}) => {
-    const {id, name, img, description, price} = service;
+    const {_id, name, img, description, price} = service;
 
     const navigate = useNavigate();
     const getCartId = (id) =>{
@@ -15,7 +15,7 @@ const ShowData = ({service}) => {
             <h2>{name}</h2>
             <h4>{price}</h4>
             <p>{description}</p>
-            <button onClick={()=> getCartId(id)} className='btn btn-primary'>Book :{name}</button>
+            <button onClick={()=> getCartId(_id)} className='btn btn-primary'>Book :{name}</button>
         </div>
     );
 };

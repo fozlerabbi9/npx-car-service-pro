@@ -20,7 +20,8 @@ import { useEffect, useState } from "react"
 const useDataFun = () =>{
     const [services, setServices] = useState([]);
     useEffect(()=>{
-        fetch("services.json")
+        // fetch("services.json")
+        fetch("https://calm-basin-38280.herokuapp.com/service")
         .then(res => res.json())
         .then(data => setServices(data))
     },[])

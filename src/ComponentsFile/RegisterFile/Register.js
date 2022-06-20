@@ -6,6 +6,7 @@ import auth from '../../firebase.init';
 import { Link, useNavigate } from 'react-router-dom';
 import SosialLogin from '../SosialLoginFile/SosialLogin';
 import Loading from '../SharedPage/LoadingFile/Loading';
+import useToken from '../HooksFile/useToken';
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -21,6 +22,7 @@ const Register = () => {
     const [signInWithGoogle, user, loading] = useSignInWithGoogle(auth);
     const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     const navigate = useNavigate(auth);
+    const [token] = useToken(user)
     // console.log(user?.displayName);
 
     // if (userLog) {
@@ -29,6 +31,9 @@ const Register = () => {
     // if (userLog || user) {
     //     navigate("/")
     // }
+    if (token) {
+        navigate("/")
+    }
     if(loading){
         return <Loading></Loading>
     }
@@ -78,7 +83,7 @@ const Register = () => {
                 await updateProfile({ displayName : name});
                 // alert('Updated profile');
                 setError("You registerd SuccessFully...Now You Can Login");
-                navigate("/")
+                // navigate("/")
             }
         }
         // console.log(email, password, confarmPassword);

@@ -86,12 +86,19 @@ const Header = () => {
 
 
                         <Nav.Link as={Link} to="/"> home </Nav.Link>
-                        <Nav.Link href='#aboutUs'  as={Link} to="aboutUs">About-Us</Nav.Link>
-                        <Nav.Link  as={Link} to="register">Register</Nav.Link>
-                        <Nav.Link  as={Link} to="login">Login</Nav.Link>
+                        <Nav.Link href='#aboutUs' as={Link} to="aboutUs">About-Us</Nav.Link>
+                        <Nav.Link as={Link} to="register">Register</Nav.Link>
+                        <Nav.Link as={Link} to="login">Login</Nav.Link>
                         <Nav.Link href='#coolCompo'>Cool</Nav.Link>
 
                         {/* <Nav.Link></Nav.Link> */}
+                        {
+                            user && <>
+                                <Nav.Link as={Link} to="addedservice">Addedservice</Nav.Link>
+                                <Nav.Link as={Link} to="mansgeServices">Manage</Nav.Link>
+                                <Nav.Link as={Link} to="order">Orders</Nav.Link>
+                            </>
+                        }
 
                         <Nav.Link><Link to="register">
                             {

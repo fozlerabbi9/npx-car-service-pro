@@ -12,12 +12,12 @@ const Services = () => {
                 {
                     servises.map(service => <SingleService
                         service={service}
-                        key={service.id}
+                        key={service._id}
                     ></SingleService>)
                 }
             </div>
 
-            <h2 className='mt-5 pt-5' id='coolCompo'>Cool Component Use Href=# and scroll smothely</h2>
+            <h2 className='mt-5 pt-5' id='coolCompo'>Coolll Component Use Href=# and scroll smothely</h2>
 
         </div>
     );
